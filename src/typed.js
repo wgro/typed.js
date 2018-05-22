@@ -224,7 +224,7 @@ export default class Typed {
       }
     }
     this.timeout = setTimeout(() => {
-      this.backspace(curString, curStrPos);
+      // this.backspace(curString, curStrPos);
     }, this.backDelay);
   }
 

@@ -235,55 +235,7 @@ export default class Typed {
    * @private
    */
   backspace(curString, curStrPos) {
-    if (this.pause.status === true) {
-      this.setPauseStatus(curString, curStrPos, true);
-      return;
     }
-    if (this.fadeOut) return this.initFadeOut();
-
-    this.toggleBlinking(false);
-    const humanize = this.humanizer(this.backSpeed);
-
-    this.timeout = setTimeout(() => {
-      curStrPos = htmlParser.backSpaceHtmlChars(curString, curStrPos, this);
-      // replace text with base text + typed characters
-      const curStringAtPosition = curString.substr(0, curStrPos);
-      this.replaceText(curStringAtPosition);
-
-      // if smartBack is enabled
-      if (this.smartBackspace) {
-        // the remaining part of the current string is equal of the same part of the new string
-        let nextString = this.strings[this.arrayPos + 1];
-        if (nextString && curStringAtPosition === nextString.substr(0, curStrPos)) {
-          this.stopNum = curStrPos;
-        } else {
-          this.stopNum = 0;
-        }
-      }
-
-      // if the number (id of character in current string) is
-      // less than the stop number, keep going
-      if (curStrPos > this.stopNum) {
-        // subtract characters one by one
-        curStrPos--;
-        // loop the function
-        this.backspace(curString, curStrPos);
-      } else if (curStrPos <= this.stopNum) {
-        // if the stop number has been reached, increase
-        // array position to next string
-        this.arrayPos++;
-        // When looping, begin at the beginning after backspace complete
-        if (this.arrayPos === this.strings.length) {
-          this.arrayPos = 0;
-          this.options.onLastStringBackspaced();
-          this.shuffleStringsIfNeeded();
-          this.begin();
-        } else {
-          this.typewrite(this.strings[this.sequence[this.arrayPos]], curStrPos);
-        }
-      }
-      // humanized value for typing
-    }, humanize);
   }
 
   /**
